@@ -26,6 +26,9 @@ func main() {
 		if string(parenthesis[i]) == ")" {
 			floor -= 1
 		}
+		if floor == -1 {
+			fmt.Printf("Entered the basement at: %d\n", i+1)
+		}
 	}
 
 	fmt.Printf("Final floor: %d\n", floor)
