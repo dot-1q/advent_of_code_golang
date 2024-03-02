@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# Create the banner present in the README.md :)
+
 star="\e[5;33m*\e[0m\e[1;32m"
 o="\e[0m\e[1;31mo\e[0m\e[1;32m"
 
