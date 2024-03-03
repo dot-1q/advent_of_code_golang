@@ -44,6 +44,7 @@ func partOne() {
 	if err != nil {
 		panic(err)
 	}
+	defer f.Close()
 	scanner := bufio.NewScanner(f)
 
 	// a 1000x1000 grid of booleans, its easier to toggle them (!bool)
@@ -102,6 +103,7 @@ func partTwo() {
 	if err != nil {
 		panic(err)
 	}
+	defer f.Close()
 	scanner := bufio.NewScanner(f)
 
 	// a 1000x1000 grid of booleans, its easier to toggle them (!bool)
