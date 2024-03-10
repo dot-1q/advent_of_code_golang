@@ -12,15 +12,14 @@ import (
 func main() {
 
 	f, _ := os.Open("input.txt")
-	/* sum := partOne(f)
-	fmt.Println("Part1: ", sum) */
+	sum := partOne(f)
+	fmt.Println("Part1: ", sum)
 
 	// Reset the file pointer
 	f.Seek(0, 0)
 
-	p2 := partTwo(f)
-	fmt.Println("Part2: ", p2)
-
+	sum = partTwo(f)
+	fmt.Println("Part2: ", sum)
 }
 
 func partOne(file io.Reader) int {
@@ -40,7 +39,6 @@ func partOne(file io.Reader) int {
 			break
 		}
 	}
-
 	return int(sum)
 }
 
@@ -56,7 +54,6 @@ func partTwo(file io.Reader) int {
 
 	data := map[string]any{}
 	json.Unmarshal(bytes, &data)
-
 	return sumItem(data)
 }
 
