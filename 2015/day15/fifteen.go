@@ -52,6 +52,7 @@ func partOne(ingredients []Ingredient) {
 	tFrosting := 0
 	tSugar := 0
 
+	// These are just to save the quantities of each ingredient, not needed
 	finalSp := 0
 	finalPb := 0
 	finalFr := 0
@@ -60,10 +61,13 @@ func partOne(ingredients []Ingredient) {
 	// Brute force the 100 tbps
 	// how many tbps? 0,1,2,....99,100 | 100 has to be calculated as well
 	for s := tSprinkes; s >= 0; s-- {
+		// At each iteration, calculate the tbps of the other ingredients
 		tPeanut = (tbsp - tSprinkes)
 		for p := tPeanut; p >= 0; p-- {
+			// At each iteration, calculate the tbps of the other ingredients
 			tFrosting = (tbsp - tSprinkes - tPeanut)
 			for p := tFrosting; p >= 0; p-- {
+				// At each iteration, calculate the tbps of the other ingredients
 				tSugar = (tbsp - tSprinkes - tPeanut - tFrosting)
 
 				s := CalculateScore([]int{tSprinkes, tPeanut, tFrosting, tSugar}, ingredients)
@@ -75,10 +79,13 @@ func partOne(ingredients []Ingredient) {
 					finalFr = tFrosting
 					finalSu = tSugar
 				}
+				// Decrease weights after each iteration, for the new permutatinos of weights
 				tFrosting--
 			}
+			// Decrease weights after each iteration, for the new permutatinos of weights
 			tPeanut--
 		}
+		// Decrease weights after each iteration, for the new permutatinos of weights
 		tSprinkes--
 
 	}
@@ -94,6 +101,7 @@ func partTwo(ingredients []Ingredient) {
 	tFrosting := 0
 	tSugar := 0
 
+	// These are just to save the quantities of each ingredient, not needed
 	finalSp := 0
 	finalPb := 0
 	finalFr := 0
@@ -102,10 +110,13 @@ func partTwo(ingredients []Ingredient) {
 	// Brute force the 100 tbps
 	// how many tbps? 0,1,2,....99,100 | 100 has to be calculated as well
 	for s := tSprinkes; s >= 0; s-- {
+		// At each iteration, calculate the tbps of the other ingredients
 		tPeanut = (tbsp - tSprinkes)
 		for p := tPeanut; p >= 0; p-- {
+			// At each iteration, calculate the tbps of the other ingredients
 			tFrosting = (tbsp - tSprinkes - tPeanut)
 			for p := tFrosting; p >= 0; p-- {
+				// At each iteration, calculate the tbps of the other ingredients
 				tSugar = (tbsp - tSprinkes - tPeanut - tFrosting)
 
 				calories := CalculateCalories([]int{tSprinkes, tPeanut, tFrosting, tSugar}, ingredients)
@@ -123,10 +134,13 @@ func partTwo(ingredients []Ingredient) {
 					finalFr = tFrosting
 					finalSu = tSugar
 				}
+				// Decrease weights after each iteration, for the new permutatinos of weights
 				tFrosting--
 			}
+			// Decrease weights after each iteration, for the new permutatinos of weights
 			tPeanut--
 		}
+		// Decrease weights after each iteration, for the new permutatinos of weights
 		tSprinkes--
 
 	}
