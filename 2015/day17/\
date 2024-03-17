@@ -1,0 +1,42 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+	f, _ := os.Open("input.txt")
+
+	containers := []int{}
+
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		capacity, _ := strconv.Atoi(line)
+
+		containers = append(containers, capacity)
+	}
+
+	fmt.Println(containers)
+
+	c := generateCombs(containers, 2, 0)
+	fmt.Println(c)
+
+}
+
+func generateCombs(numbers []int, length int, start int) [][]int {
+	if length == 0 {
+		return nil
+	}
+
+	combs := [][]int{{}}
+	for i := start; i < len(numbers); i++ {
+		combs = append(combs, []int{numbers[i]})
+		combs = append(combs, generateCombs(numbers, length-1, i+1)...)
+	}
+	return combs
+}
