@@ -22,91 +22,83 @@ func main() {
 		containers = append(containers, capacity)
 	}
 
-	fmt.Println(containers)
-
-	c := generateCombs(containers, []int{}, 0)
-	n := calculateCapactity(c)
-	fmt.Println("Part1: ", n)
-	// Find minimum number of containers that can hold the 150 litters
-	n = calculateMinCapactity(c)
-	// Find the different ways that those 4 containers appear
-	d := differentWays(c, n)
-	fmt.Println("Part2: ", d)
-
+	partOne(containers)
+	partTwo(containers)
 }
 
-func generateCombs(numbers []int, combination []int, start int) [][]int {
-	if start == len(numbers) {
-		// (reached end of list after selecting/not selecting)
-		return [][]int{append([]int{}, combination...)}
-	} else {
-		// (element at ndx not included)
-		c := [][]int{}
-		c = append(c, generateCombs(numbers, combination, start+1)...)
-		// (include element at ndx)
-		c = append(c, generateCombs(numbers, append(combination, numbers[start]), start+1)...)
-		return c
+func partOne(containers []int) {
+
+	// For every length, calculate how many combinations hold exactly 150L
+	number := 0
+	for length := range len(containers) {
+		combinations := generateCombinations(containers, length)
+		n, _ := calculateCapactity(combinations)
+		number += n
 	}
+	fmt.Println("Part1: ", number)
+
+}
+func partTwo(containers []int) {
+	// For every length, get the combinations that hold 150L, and filter for minimum values
+	minimum := math.MaxInt32
+	for length := range len(containers) {
+		combinations := generateCombinations(containers, length)
+		_, combs := calculateCapactity(combinations)
+
+		for _, c := range combs {
+			minimum = min(minimum, len(c))
+		}
+	}
+
+	// Now, after finding the minimum number of containers that hold 150L, how many different ways are there
+	// of that length, that hold 150L
+	combinations := generateCombinations(containers, minimum)
+	_, combs := calculateCapactity(combinations)
+
+	// fmt.Println(combs)
+	fmt.Println("Part2: ", len(combs))
 }
 
-func calculateCapactity(combs [][]int) int {
-
-	diff_combs := 0
+// Calculate Capacity of the combinations, and return those combinations which hold 150L
+func calculateCapactity(combs [][]int) (int, [][]int) {
+	holds := 0
+	combinations := [][]int{}
 	for _, comb := range combs {
 		sum := 0
 		for _, capacity := range comb {
 			sum += capacity
 		}
-		// The sum of the combinations of the various sizes has to be exactly
-		// 150
+		// The sum of the combinations of the various sizes has to be exactly 150L
 		if sum == 150 {
-			diff_combs++
+			holds++
+			combinations = append(combinations, comb)
 		}
-		sum = 0
-	}
 
-	return diff_combs
+	}
+	return holds, combinations
 }
 
-func calculateMinCapactity(combs [][]int) int {
-
-	min_containers := math.MaxInt32
-	for _, comb := range combs {
-		sum := 0
-		for _, capacity := range comb {
-			sum += capacity
-		}
-		// The sum of the combinations of the various sizes has to be exactly
-		// 150
-		if sum == 150 {
-			// get the minimum amount of containers
-			if len(comb) < min_containers {
-				min_containers = len(comb)
-			}
-		}
-		sum = 0
+// Generate all combinations of a given length
+func generateCombinations(numbers []int, length int) [][]int {
+	if length == 0 {
+		return [][]int{{}}
 	}
 
-	return min_containers
-}
+	combs := [][]int{}
+	for i, n := range numbers {
+		// Create an empty list with this first element
+		l := append([]int{}, n)
 
-func differentWays(combs [][]int, ways int) int {
-	diff_way := 0
-	for _, comb := range combs {
-		if len(comb) == ways {
-			sum := 0
-			for _, capacity := range comb {
-				sum += capacity
-			}
-			// The sum of the combinations of the various sizes has to be exactly
-			// 150
-			if sum == 150 {
-				// get the minimum amount of containers
-				diff_way++
-			}
-			sum = 0
+		// Generate the lists taking out the first element, and with -1 length
+		lists := generateCombinations(numbers[i+1:], length-1)
 
+		// For all the different lists of length -1, append the elements, to the original
+		// list 'l', which only had the first element.
+		// After that, append those lists to the list of all combinations
+		for _, list := range lists {
+
+			combs = append(combs, append(l, list...))
 		}
 	}
-	return diff_way
+	return combs
 }
