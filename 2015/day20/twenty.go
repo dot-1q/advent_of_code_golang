@@ -15,7 +15,7 @@ func main() {
 }
 
 func partOne(puzzle int) int {
-	// Essentially, part one needs us to calculate the sum of the divisions of a given house, and  check if the division
+	// Essentially, part one needs us to calculate the sum of the divisors (factors) of a given house, and  check if the division
 	// is the same as the puzzle number.
 	// Now, instead of just brute forcing the calculation of the whole proper factors of a number, and then calculating its sum,
 	// there's actually a formula to calculate that sum, relying on the *PRIME* factors, so we just have to calculate those
