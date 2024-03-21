@@ -39,7 +39,6 @@ func partTwo(puzzle int, startingHouse int) int {
 	// since the smallest ones are guaranteed to not follow the rule, i.e, those elves would have stopped giving presents
 	// already.
 
-	// Store the calculated factors in a lookup table, to be easier to find them
 	for house := startingHouse; house <= math.MaxInt32; house++ {
 		factors := factorsInverse(house)
 
