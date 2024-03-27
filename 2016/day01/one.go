@@ -9,13 +9,11 @@ import (
 )
 
 func main() {
-	// We only go right or left
 	// The arrays represent (x,y)
 	pos := []int{0, 0}
 	visitedPos := map[[2]int]bool{
 		{0, 0}: true,
 	}
-
 	// North, West, South and  East, (x,y) in Cartesian map.
 	// Circular array for the movements. Every time we turn, either left or right
 	// the facing direction gets shifted in the circular buffer, so we always know where we're facing
@@ -28,8 +26,7 @@ func main() {
 	}
 
 	f, _ := os.ReadFile("input.txt")
-	line := string(f)
-	dirs := strings.Split(line, ",")
+	dirs := strings.Split(string(f), ",")
 
 	partTwo := true
 	for _, direction := range dirs {
@@ -38,7 +35,7 @@ func main() {
 		case 'R':
 			steps, _ := strconv.Atoi(string(chars[1:]))
 			// Update wherewere facing
-			facing = (facing + 3) % 4
+			facing = (facing + 1) % 4
 			for range steps {
 				pos[0] += directions[facing][0]
 				pos[1] += directions[facing][1]
@@ -52,7 +49,7 @@ func main() {
 		case 'L':
 			steps, _ := strconv.Atoi(string(chars[1:]))
 			// Update where were facing
-			facing = (facing + 1) % 4
+			facing = (facing + 3) % 4
 			for range steps {
 				pos[0] += directions[facing][0]
 				pos[1] += directions[facing][1]
