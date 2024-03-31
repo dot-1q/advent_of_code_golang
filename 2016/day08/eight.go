@@ -100,6 +100,7 @@ func rect(screen *[6][50]int, row, col int) {
 	}
 }
 
+// Create an identical copy of a given column. Used to not loose the original values upon rotating them
 func copyColumn(screen *[6][50]int, col int) [6]int {
 	column := [6]int{}
 	for i, row := range screen {
@@ -108,6 +109,7 @@ func copyColumn(screen *[6][50]int, col int) [6]int {
 	return column
 }
 
+// Create an identical copy of a given row. Used to not loose the original values upon rotating them
 func copyRow(screen *[6][50]int, row int) [50]int {
 	r := [50]int{}
 	for i, cell := range screen[row] {
@@ -131,7 +133,6 @@ func countLitPixels(screen *[6][50]int) int {
 func printChars(screen *[6][50]int) {
 	for _, r := range screen {
 		for _, c := range r {
-			// each char is 6 letters wide
 			if c == 1 {
 				fmt.Printf("#")
 			} else {
