@@ -79,7 +79,6 @@ func findShortestPath(grid [50][50]string, start, end [2]int) (int, [][2]int) {
 					visited = append(visited, neighbour)
 				}
 				queue.Enqueue(neighbour)
-
 			}
 		}
 	}
