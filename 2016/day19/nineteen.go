@@ -19,13 +19,10 @@ func partOne(puzzle int) {
 	start := &Seat{number: 1}
 	iterator := start
 	// Array of the sitting positions. Will be easier to remove the elf sitting across for part 2
-	seats := []*Seat{}
-	seats = append(seats, iterator)
 	// Sit the elves in a ring list
 	for i := 2; i <= puzzle; i++ {
 		iterator.next = &Seat{number: i}
 		iterator = iterator.next
-		seats = append(seats, iterator)
 	}
 	// Link the last seat to the first
 	iterator.next = start
