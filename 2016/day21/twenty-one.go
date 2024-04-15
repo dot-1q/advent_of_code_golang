@@ -24,8 +24,8 @@ func main() {
 }
 
 // Decode a password based on a given instruction. For part2, we should reverse the transformation. Some reversals are trivial
-// Moves,Swaps and ReverseStrings are the same if reverse or normal order, they undo eachother
-// Rotations have to be their symmetric.
+// Swaps and ReverseStrings are the same if in reverse or normal order, they are symstrical
+// Rotations and Moves have to be accounted for.
 func decodePassword(start []rune, lines []string, reverse bool) string {
 	for _, inst := range lines {
 		line := strings.Split(inst, " ")
