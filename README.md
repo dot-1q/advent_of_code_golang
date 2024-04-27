@@ -10,6 +10,7 @@ This was done as a way to learn and get experienced with Go, so the first implem
 | 2015 | Yes         |
 | 2016 | Yes*        | 
 | 2017 | In Progress | 
+
 \* I did not do day11.
 
 # Notable Challenges
