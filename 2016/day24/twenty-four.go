@@ -25,8 +25,6 @@ func main() {
 		for x, cell := range row {
 			// Its a number
 			if cell != '#' && cell != '.' {
-				// Get the costs for every pair. From one number to the other
-				// fmt.Printf("Number: %c", cell)
 				costs := breadthFirstSearch(grid, x, y)
 				fmt.Printf("For number %c, the cost map is: %v\n", cell, costs)
 				graph[int(cell-'0')] = costs
