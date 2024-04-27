@@ -1,8 +1,9 @@
-// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/util/ReadFile.go
-// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/util/ReadFile.go
-// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/util/ReadFile.go
-// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/util/ReadFile.go
-// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/util/ReadFile.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
+// CREDIT TO: https://github.com/alexchao26/advent-of-code-go/blob/main/2016/day11/main.go
 
 package main
 

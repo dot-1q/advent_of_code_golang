@@ -8,7 +8,9 @@ This was done as a way to learn and get experienced with Go, so the first implem
 | Year | Done        |
 |------|-------------|
 | 2015 | Yes         |
-| 2016 | In Progress <br> Can't even fathom day11|
+| 2016 | Yes*        | 
+| 2017 | In Progress | 
+\* I did not do day11.
 
 # Notable Challenges
 [Day 22 of 2015](2015/day22/twenty-two.go) Implemented Dijkstra's algorithm with a Priority Queue with respect to each game state and its mana spent.
