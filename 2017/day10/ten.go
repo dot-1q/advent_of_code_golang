@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	// partOne()
+	partOne()
 	partTwo()
 }
 func partOne() {
@@ -25,7 +25,6 @@ func partOne() {
 		index += (number + skip)
 		skip++
 	}
-	fmt.Println(array)
 	fmt.Printf("Part1: %d\n", array[0]*array[1])
 }
 
@@ -33,7 +32,6 @@ func partTwo() {
 	l, _ := os.ReadFile("input.txt")
 	n := strings.TrimSpace(string(l))
 	numbers := getASCII(n)
-	fmt.Println(numbers)
 	array := array()
 	index := 0
 	skip := 0
@@ -60,7 +58,6 @@ func partTwo() {
 		// use %x to get hexadecimal version & 02 ensures leading 0 if needed
 		hexdHash += fmt.Sprintf("%02x", dense)
 	}
-
 	fmt.Printf("Part2 : %s\n", hexdHash)
 }
 
