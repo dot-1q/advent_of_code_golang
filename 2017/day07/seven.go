@@ -51,7 +51,6 @@ func main() {
 			unbalanceNode := slices.MaxFunc(c, func(a, b *Node) int {
 				return (a.SubtreeWeight + a.Weight) - (b.SubtreeWeight + b.Weight)
 			})
-
 			// Im assuming the Max will be c[0]. Which might not be the case. But works
 			// We need this value for when we find the root of the unbalanced node.
 			// We need to compare it to one of its siblings that is balanced.
