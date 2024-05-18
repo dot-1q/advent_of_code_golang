@@ -41,6 +41,8 @@ func performDance(moves []string, times int, letters [16]string) string {
 		s := strings.Join(letters[:], "")
 		// I dont know lol.
 		// Link: https://www.reddit.com/r/adventofcode/comments/7k572l/comment/drbota0/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+		// was I understood was: You need to find the cycle. Since the list of moves is always the same, if we find a
+		// sequence that we've seen already, we can skin ahead a given number of rounds.
 		if _, ok := seen[s]; ok {
 			if (1000000000-(i+1))%(i-seen[s]) == 0 {
 				fmt.Println("Answer: ", s)

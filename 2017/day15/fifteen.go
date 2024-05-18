@@ -43,7 +43,7 @@ func partTwo() {
 			judge++
 		}
 	}
-	fmt.Printf("Part 1 | Judge: %d\n", judge)
+	fmt.Printf("Part 2 | Judge: %d\n", judge)
 }
 
 func generateNextValue(value, factor int) int {
