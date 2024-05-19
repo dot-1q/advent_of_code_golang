@@ -26,7 +26,6 @@ func main() {
 	instructions := strings.Split(strings.TrimSpace(string(f)), "\n")
 	partOne(instructions)
 	partTwo(instructions)
-
 }
 
 func partOne(instructions []string) {
