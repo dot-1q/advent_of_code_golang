@@ -12,6 +12,7 @@ func main() {
 	// rotateAntiClockwise(m1)
 	flipHorizontal(m1)
 	// flipVertical(m1)
+	// flipVertical(m1)
 
 	for i := range m1 {
 		fmt.Printf("%c\n", m1[i])
@@ -27,6 +28,8 @@ func rotateClockwise(matrix [][]rune) [][]rune {
 	// transpose it
 	for i := 0; i < len(matrix); i++ {
 		for j := 0; j < i; j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 		}
 	}
