@@ -3,155 +3,136 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strings"
 )
 
 func main() {
-	// m1 := [][]rune{{'.', '#', '.'}, {'.', '.', '#'}, {'#', '#', '#'}}
 	rules := createRules()
+	part := 2
 
-	m2 := [][]rune{
+	m := [][]rune{
 		{'.', '#', '.'},
 		{'.', '.', '#'},
 		{'#', '#', '#'}}
-	for range 4 {
-		for i := range m2 {
-			fmt.Printf("%c\n", m2[i])
-		}
-		m2 = enhance(m2, rules)
-		fmt.Println("----")
-		for i := range m2 {
-			fmt.Printf("%c\n", m2[i])
-		}
-		fmt.Println("Done")
+	if part == 1 {
+		m = enhance(m, rules, 5)
+		fmt.Println("Part 1 : ", howManyOn(m))
+	} else {
+		m = enhance(m, rules, 18)
+		fmt.Println("Part 2 : ", howManyOn(m))
 	}
-
-	// for k := range rules {
-	// 	fmt.Printf("%s: => %s\n", k, rules[k])
-	// }
 }
 
-func enhance(matrix [][]rune, rules map[string]string) [][]rune {
-	if len(matrix)%2 == 0 {
-		fmt.Println("Here")
-		// Array of 2D arrays
-		twod := twobytwo(matrix)
+func enhance(matrix [][]rune, rules map[string]string, times int) [][]rune {
+	m := matrix
+	for range times {
 		result := [][][]rune{}
-		for _, square := range twod {
-			// Resulting matrices from the transformation.
-			result = append(result, applyTransformation(square, rules))
+		if len(m)%2 == 0 {
+			// Array of 2D arrays
+			twod := extract2x2Matrices(m, len(m))
+			for _, square := range twod {
+				// Resulting matrices from the transformation.
+				result = append(result, applyTransformation(square, rules))
+			}
+			// The 2by2 arrays get transformed into multiple 3x3
+			m = merge3x3Matrices(result)
+		} else {
+			treed := extract3x3Matrices(m, len(m))
+			for _, square := range treed {
+				result = append(result, applyTransformation(square, rules))
+			}
+			// The 3by3 arrays get transformed into multiple 4x4
+			m = merge4x4Matrices(result)
 		}
-		return concatMatrixTwo(result)
-	} else {
-		treed := threebythree(matrix)
-		result := [][][]rune{}
-		for _, square := range treed {
-			result = append(result, applyTransformation(square, rules))
-		}
-		return concatMatrixThree(result)
 	}
+	return m
+}
+
+// Function to merge 4x4 matrices into a larger matrix
+func merge4x4Matrices(matrices [][][]rune) [][]rune {
+	numMatrices := len(matrices)
+	dim := int(math.Sqrt(float64(numMatrices))) * 4
+	largeMatrix := make([][]rune, dim)
+	for i := range largeMatrix {
+		largeMatrix[i] = make([]rune, dim)
+	}
+
+	// Fill the larger matrix with the 4x4 matrices
+	for idx, matrix := range matrices {
+		rowOffset := (idx / (dim / 4)) * 4
+		colOffset := (idx % (dim / 4)) * 4
+		for i := 0; i < 4; i++ {
+			for j := 0; j < 4; j++ {
+				largeMatrix[rowOffset+i][colOffset+j] = matrix[i][j]
+			}
+		}
+	}
+	return largeMatrix
+}
+
+func merge3x3Matrices(matrices [][][]rune) [][]rune {
+	// Calculate the dimension of the larger matrix
+	numMatrices := len(matrices)
+	dim := int(math.Sqrt(float64(numMatrices))) * 3
+	largeMatrix := make([][]rune, dim)
+	for i := range largeMatrix {
+		largeMatrix[i] = make([]rune, dim)
+	}
+
+	// Fill the larger matrix with the 3x3 matrices
+	for idx, matrix := range matrices {
+		rowOffset := (idx / (dim / 3)) * 3
+		colOffset := (idx % (dim / 3)) * 3
+		for i := 0; i < 3; i++ {
+			for j := 0; j < 3; j++ {
+				largeMatrix[rowOffset+i][colOffset+j] = matrix[i][j]
+			}
+		}
+	}
+	return largeMatrix
 }
 
 func applyTransformation(matrix [][]rune, rules map[string]string) [][]rune {
 	// Get the string representation of this matrix
 	str := MatrixToStr(matrix)
 	transformation := rules[str]
-	return createMatrix(transformation)
+	return StrToMatrix(transformation)
 }
 
-func concatMatrixTwo(matrices [][][]rune) [][]rune {
-	m := make([][]rune, len(matrices[0])*2)
-	for _, g := range matrices {
-		for _, row := range g {
-			fmt.Printf("%c\n", row)
-		}
-		fmt.Println("--------")
-	}
+func extract2x2Matrices(matrix [][]rune, N int) [][][]rune {
+	var result [][][]rune
 
-	for i := 0; i < len(matrices); i = i + 3 {
-		c := 0
-		r := matrices[c][:][0]
-		x := matrices[c+1][:][0]
-		m[i] = append(m[i], r...)
-		m[i] = append(m[i], x...)
-
-		r2 := matrices[c][:][1]
-		x2 := matrices[c+1][:][1]
-		m[i+1] = append(m[i+1], r2...)
-		m[i+1] = append(m[i+1], x2...)
-
-		r3 := matrices[c][:][2]
-		x3 := matrices[c+1][:][2]
-		m[i+2] = append(m[i+2], r3...)
-		m[i+2] = append(m[i+2], x3...)
-
-	}
-	return m
-}
-
-func concatMatrixThree(matrices [][][]rune) [][]rune {
-	m := make([][]rune, len(matrices[0]))
-	if len(matrices) == 1 {
-		return matrices[0]
-	}
-
-	for i := 0; i < len(m); i = i + 3 {
-		r := matrices[i][:][0]
-		x := matrices[i+1][:][0]
-		y := matrices[i+2][:][0]
-		m[i] = append(m[i], r...)
-		m[i] = append(m[i], x...)
-		m[i] = append(m[i], y...)
-
-		r2 := matrices[i][:][1]
-		x2 := matrices[i+1][:][1]
-		y2 := matrices[i+2][:][1]
-		m[i+1] = append(m[i+1], r2...)
-		m[i+1] = append(m[i+1], x2...)
-		m[i+1] = append(m[i+1], y2...)
-
-		r3 := matrices[i][:][2]
-		x3 := matrices[i+1][:][2]
-		y3 := matrices[i+2][:][2]
-		m[i+2] = append(m[i+2], r3...)
-		m[i+2] = append(m[i+2], x3...)
-		m[i+2] = append(m[i+2], y3...)
-	}
-	return m
-}
-
-func twobytwo(matrix [][]rune) [][][]rune {
-	// This is such insane slicing, that if you want to understand just print along the way
-	// It just breaks down 4x4,6x6,8x8,ect... into 2x2 squares.
-	results := [][][]rune{}
-	for i := 0; i < len(matrix); i = i + 2 {
-		for cell := 0; cell < len(matrix[i]); cell = cell + 2 {
-			g := matrix[i : i+2]
-			n := make([][]rune, len(g))
-			// This is needed, as slicing [][x:x+2] doesnt do what it should, i.e, slicing the inner array.
-			for x, inner := range g {
-				n[x] = inner[cell : cell+2]
+	for i := 0; i < N; i += 2 {
+		for j := 0; j < N; j += 2 {
+			// Create a new 2x2 matrix
+			newMatrix := [][]rune{
+				{matrix[i][j], matrix[i][j+1]},
+				{matrix[i+1][j], matrix[i+1][j+1]},
 			}
-			results = append(results, n)
+			result = append(result, newMatrix)
 		}
 	}
-	return results
+	return result
 }
 
-func threebythree(matrix [][]rune) [][][]rune {
-	results := [][][]rune{}
-	for i := 0; i < len(matrix); i = i + 3 {
-		for cell := 0; cell < len(matrix[i]); cell = cell + 3 {
-			g := matrix[i : i+3]
-			n := make([][]rune, len(g))
-			for x, inner := range g {
-				n[x] = inner[cell : cell+3]
+func extract3x3Matrices(matrix [][]rune, N int) [][][]rune {
+	var result [][][]rune
+
+	for i := 0; i < N; i += 3 {
+		for j := 0; j < N; j += 3 {
+			// Create a new 3x3 matrix
+			newMatrix := [][]rune{
+				{matrix[i][j], matrix[i][j+1], matrix[i][j+2]},
+				{matrix[i+1][j], matrix[i+1][j+1], matrix[i+1][j+2]},
+				{matrix[i+2][j], matrix[i+2][j+1], matrix[i+2][j+2]},
 			}
-			results = append(results, n)
+			result = append(result, newMatrix)
 		}
 	}
-	return results
+
+	return result
 }
 
 func createRules() map[string]string {
@@ -176,7 +157,7 @@ func createRotations(rule string) []string {
 	// Add the original rule
 	rotations := []string{rule}
 	// Create the matrix from the rule
-	matrix := createMatrix(rule)
+	matrix := StrToMatrix(rule)
 
 	// Apply the all transformations, and return to string format and append.
 	rotate90 := rotateClockwise(matrix)
@@ -199,7 +180,7 @@ func createRotations(rule string) []string {
 	return rotations
 }
 
-func createMatrix(rule string) [][]rune {
+func StrToMatrix(rule string) [][]rune {
 	matrix := [][]rune{}
 
 	rows := strings.Split(rule, "/")
@@ -250,31 +231,6 @@ func rotateClockwise(matrix [][]rune) [][]rune {
 	return m
 }
 
-func rotateAntiClockwise(matrix [][]rune) [][]rune {
-	// reverse the matrix
-	for i := 0; i < len(matrix); i++ {
-		for j := i; j < len(matrix); j++ {
-			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-		}
-	}
-
-	// transpose it
-	i := 0
-	j := 0
-	column := 0
-	for column < len(matrix) {
-		i = 0
-		j = len(matrix) - 1
-		for i < j {
-			matrix[i][column], matrix[j][column] = matrix[j][column], matrix[i][column]
-			i = i + 1
-			j = j - 1
-		}
-		column = column + 1
-	}
-	return matrix
-}
-
 func flipHorizontal(matrix [][]rune) [][]rune {
 	// Create new matrix
 	m := make([][]rune, len(matrix))
@@ -289,18 +245,14 @@ func flipHorizontal(matrix [][]rune) [][]rune {
 	return m
 }
 
-func flipVertical(matrix [][]rune) [][]rune {
-	// Create new matrix
-	m := make([][]rune, len(matrix))
-	for i := range len(matrix) {
-		m[i] = make([]rune, len(matrix[i]))
-		copy(m[i], matrix[i])
-	}
-	for i := 0; i < len(matrix); i++ {
-		for j := i; j < len(matrix); j++ {
-			m[i][j], m[j][i] = matrix[j][i], matrix[i][j]
+func howManyOn(m [][]rune) int {
+	s := 0
+	for _, row := range m {
+		for _, char := range row {
+			if char == '#' {
+				s++
+			}
 		}
 	}
-	m = rotateClockwise(m)
-	return m
+	return s
 }
