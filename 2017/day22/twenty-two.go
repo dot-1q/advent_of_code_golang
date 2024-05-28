@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 )
 
@@ -27,15 +28,14 @@ func main() {
 		{1, 0},  // Up
 		{0, -1}, // Left
 	}
-	partOne(grid1, directions)
-	partTwo(grid2, directions)
+	simulation(grid1, directions, 1, 10000)
+	simulation(grid2, directions, 2, 10000000)
 }
 
-func partOne(grid map[[2]int]int, directions [4][2]int) {
-	// Starting positions.
-	x := 12
-	y := 12
-	bursts := 10000
+func simulation(grid map[[2]int]int, directions [4][2]int, part, bursts int) {
+	// Starting positions. The grid map has 25*25 elements, so the middle is the 25/2. Assuming its square.
+	x := int(math.Sqrt(float64(len(grid)))) / 2
+	y := int(math.Sqrt(float64(len(grid)))) / 2
 	facing := 0
 	infections := 0
 	for range bursts {
@@ -44,42 +44,23 @@ func partOne(grid map[[2]int]int, directions [4][2]int) {
 		case infected:
 			facing = (facing + 1) % 4
 			// Infect the node
-			grid[[2]int{y, x}] = clean
+			if part == 1 {
+				grid[[2]int{y, x}] = clean
+			} else {
+				grid[[2]int{y, x}] = flagged
+			}
 			// Update position
 			y += directions[facing][0]
 			x += directions[facing][1]
 		case clean:
 			facing = (facing + 3) % 4
-			grid[[2]int{y, x}] = infected
-			// Update position
-			y += directions[facing][0]
-			x += directions[facing][1]
-			infections++
-		}
-	}
-	fmt.Printf("Part 1 : After %d bursts, there have been %d Infections\n", bursts, infections)
-}
-
-func partTwo(grid map[[2]int]int, directions [4][2]int) {
-	// Starting positions.
-	x := 12
-	y := 12
-	bursts := 10000000
-	facing := 0
-	infections := 0
-	for range bursts {
-		value := grid[[2]int{y, x}]
-		switch value {
-		case infected:
-			facing = (facing + 1) % 4
 			// Infect the node
-			grid[[2]int{y, x}] = flagged
-			// Update position
-			y += directions[facing][0]
-			x += directions[facing][1]
-		case clean:
-			facing = (facing + 3) % 4
-			grid[[2]int{y, x}] = weakened
+			if part == 1 {
+				grid[[2]int{y, x}] = infected
+				infections++
+			} else {
+				grid[[2]int{y, x}] = weakened
+			}
 			// Update position
 			y += directions[facing][0]
 			x += directions[facing][1]
@@ -99,7 +80,7 @@ func partTwo(grid map[[2]int]int, directions [4][2]int) {
 			x += directions[facing][1]
 		}
 	}
-	fmt.Printf("Part 2 : After %d bursts, there have been %d Infections", bursts, infections)
+	fmt.Printf("Part %d : After %d bursts, there have been %d Infections\n", part, bursts, infections)
 }
 
 func createGrid() map[[2]int]int {
