@@ -8,10 +8,11 @@ This was done as a way to learn and get experienced with Go, so the first implem
 | Year | Done        |
 |------|-------------|
 | 2015 | Yes         |
-| 2016 | Yes*        | 
-| 2017 | In Progress | 
+| 2016 | Yes*        |
+| 2017 | Yes         |
+| 2018 | In Progress |
 
-\* I did not do day11.
+<sub><sup>\* I did not do day11. Might revisit in the future</sup></sub>
 
 # Notable Challenges
 [Day 22 of 2015](2015/day22/twenty-two.go) Implemented Dijkstra's algorithm with a Priority Queue with respect to each game state and its mana spent.
@@ -21,3 +22,5 @@ This was done as a way to learn and get experienced with Go, so the first implem
 [Day 11 of 2017](2017/day11/eleven.go) Made a very concise solution for a new grid system (Hexagonal). Made me learn about it. [Hex Grid Information](https://www.redblobgames.com/grids/hexagons)
 
 [Day 21 of 2017](2017/day21/twenty-one.go) Performed various matrix transformations (rotate and flip). ChatGPT helped me write the Merging algorithm for the matrices.
+
+[Day 24 of 2017](2017/day24/twenty-four.go) Depth First Search to create all the possible paths from one node to the next valid ones. Very concise solution.
