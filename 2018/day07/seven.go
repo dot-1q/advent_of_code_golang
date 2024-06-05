@@ -22,10 +22,8 @@ func main() {
 	fmt.Println(graph)
 	final := BreadthFirstSearch(graph, nodes, noDeps)
 	fmt.Printf("Part 1 | Final word: %s\n", final)
-	finalString, seconds := BreadthFirstSearchWithHelp(graph, nodes, noDeps)
+	finalString, seconds := BreadthFirstSearchWithHelp(graph, nodes, noDeps, 5)
 	fmt.Printf("Part 2 | Final word: %s and took %d seconds\n", finalString, seconds)
-	fmt.Println("I have a off by one error somewhere, and I cant find it. Its good enough for me as it is.")
-	fmt.Println("But my part 2 doesnt return the correct answer, but it is not off by a lot.")
 }
 
 func BreadthFirstSearch(graph Graph, nodes []string, startingPoints []string) string {
@@ -52,10 +50,10 @@ func BreadthFirstSearch(graph Graph, nodes []string, startingPoints []string) st
 }
 
 // Part 2
-func BreadthFirstSearchWithHelp(graph Graph, nodes []string, startingPoints []string) (string, int) {
+func BreadthFirstSearchWithHelp(graph Graph, nodes []string, startingPoints []string, workers int) (string, int) {
 	queue := []string{} // empty
 	seen := []string{}
-	elves := createElves(5)
+	elves := createElves(workers)
 	str := ""
 	seconds := 0
 	done := false
@@ -64,14 +62,15 @@ func BreadthFirstSearchWithHelp(graph Graph, nodes []string, startingPoints []st
 	queue = append(queue, startingPoints...)
 	for !done || len(queue) > 0 {
 		slices.Sort(queue)
-		validLetters := dequeueValid(queue, graph, seen)
-		for i, valid := range validLetters {
-			if i < len(elves) {
-				if !elves[i].isWorking {
-					elves[i].letter = valid
-					elves[i].waitTime = (int([]rune(valid)[0]) - 64) + 60 // This arithmetic is like this for readability
-					elves[i].isWorking = true
-					queue = remove(queue, valid)
+		// Only assign letters to workers that are available.
+		for _, elf := range elves {
+			if !elf.isWorking {
+				valid := dequeueValid(queue, graph, seen)
+				if len(valid) > 0 {
+					elf.letter = valid[0]
+					elf.waitTime = (int([]rune(valid[0])[0]) - 64) + 60 // This arithmetic is like this for readability
+					elf.isWorking = true
+					queue = remove(queue, valid[0])
 				}
 			}
 		}
@@ -148,7 +147,6 @@ func dequeueValid(queue []string, graph Graph, seen []string) []string {
 			valid = append(valid, candidate)
 		}
 	}
-	// Sort alphabetically the candidates that can be run. This is for when we have more than one (Part 2)
 	slices.Sort(valid)
 	return valid
 }
