@@ -29,19 +29,19 @@ func main() {
 		}
 		if str := dispersion(positions); str != "" {
 			fmt.Println(str)
-			fmt.Printf("Seconds passed %d\n", second)
+			fmt.Printf("Part 2 | Seconds passed %d\n", second)
 		}
 	}
 }
 
 func dispersion(positions [][2]int) string {
-	// get bounds
 	left := math.MaxInt16
 	right := -math.MaxInt16
 	top := math.MaxInt16
 	bottom := -math.MaxInt16
 
 	coords := map[[2]int]bool{}
+	// Get max coords from each direction.
 	for _, p := range positions {
 		coords[p] = true
 		if p[0] < top {
@@ -56,16 +56,19 @@ func dispersion(positions [][2]int) string {
 		if p[1] > right {
 			right = p[1]
 		}
+		// If the distance between the top and bttom is too big, it most likely is not a
+		// grid with letters. This value was trial and error.
 		if bottom-top > 65 {
 			return ""
 		}
 	}
 
+	// Assemble the coords into the letters
 	str := ""
-	for row := top; row <= bottom; row++ {
-		for col := left; col <= right; col++ {
+	for col := left; col <= right; col++ {
+		for row := top; row <= bottom; row++ {
 			if coords[[2]int{row, col}] {
-				str += "0"
+				str += "#"
 			} else {
 				str += " "
 			}
