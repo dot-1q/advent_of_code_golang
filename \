@@ -1,0 +1,142 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"slices"
+)
+
+type Point struct {
+	x int
+	y int
+}
+
+type Cart struct {
+	position  Point
+	direction int
+	turn      int
+}
+
+// Global directions
+var directions = [][2]int{
+	{1, 0},  // down
+	{0, 1},  // right
+	{-1, 0}, // up
+	{0, -1}, // left
+}
+
+func main() {
+	maze := createMaze()
+	fmt.Println(maze)
+	carts := getCarts(maze)
+	for _, c := range carts {
+		fmt.Printf("%+v\n", c)
+	}
+	tick(&maze, carts)
+	fmt.Println("After")
+	for _, c := range carts {
+		fmt.Printf("%+v\n", c)
+	}
+}
+
+func tick(maze *[][]rune, carts []*Cart) {
+	// Sort the carts array from top to bottom and left to right. For that, calculate its distance to
+	// the origin (0,0) i.e: top left.
+	slices.SortFunc(carts, func(a, b *Cart) int {
+		return ManhattanDistance(a.position, Point{0, 0}) - ManhattanDistance(b.position, Point{0, 0})
+	})
+
+	for _, c := range carts {
+		nextX := c.position.x + directions[c.direction][1]
+		nextY := c.position.y + directions[c.direction][0]
+		switch (*maze)[nextY][nextX] {
+		case '-': // Going forwards/backwards
+			c.position.x += directions[c.direction][1]
+			c.position.y += directions[c.direction][0]
+		case '|': // Going upwards/downwards
+			c.position.x += directions[c.direction][1]
+			c.position.y += directions[c.direction][0]
+		case '/': // Changing direction
+			c.position.x += directions[c.direction][1]
+			c.position.y += directions[c.direction][0]
+			if c.direction%2 == 0 { // The direction was up/down
+				c.direction = (c.direction - 1) % 4 // the direction will be right or left now
+			} else { // The direction was left/right
+				c.direction = (c.direction + 1) % 4 // the direction will be up or down now
+			}
+		case '\\': // Changing direction
+			c.position.x += directions[c.direction][1]
+			c.position.y += directions[c.direction][0]
+			if c.direction%2 == 0 { // The direction was up/down
+				c.direction = (c.direction + 1) % 4 // the direction will be right or left now
+			} else { // The direction was left/right
+				c.direction = (c.direction - 1) % 4 // the direction will be up or down now
+			}
+		case '+': // Make a turn
+			c.position.x += directions[c.direction][1]
+			c.position.y += directions[c.direction][0]
+			switch c.turn {
+			case 0:
+				// Going up or down
+				if c.direction%2 == 0 {
+
+				} else {
+
+				}
+			case 1:
+			case 2:
+			case 3:
+			}
+
+		default: // Its a car, since we cannot go to empty spaces
+		}
+	}
+}
+
+// Return the coordinates of the carts.
+func getCarts(maze [][]rune) []*Cart {
+	carts := []*Cart{}
+	for row := range maze {
+		for cell := range maze[row] {
+			switch maze[row][cell] {
+			case '<':
+				carts = append(carts, &Cart{Point{cell, row}, 3, 0})
+			case '>':
+				carts = append(carts, &Cart{Point{cell, row}, 1, 0})
+			case 'v':
+				carts = append(carts, &Cart{Point{cell, row}, 0, 0})
+			case '^':
+				carts = append(carts, &Cart{Point{cell, row}, 2, 0})
+			}
+		}
+	}
+	return carts
+}
+
+func createMaze() [][]rune {
+	maze := [][]rune{}
+	f, _ := os.Open("input.txt")
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		row := []rune{}
+		for _, char := range line {
+			row = append(row, char)
+		}
+		maze = append(maze, row)
+	}
+	return maze
+}
+
+func ManhattanDistance(p1, p2 Point) int {
+	return abs(p1.x-p2.x) + abs(p1.y-p2.y)
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
