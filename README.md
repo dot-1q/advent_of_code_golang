@@ -13,7 +13,9 @@ This was done as a way to learn and get experienced with Go, so the first implem
 | 2018 | In Progress+|
 
 <sub><sup>\* I did not do day11. Might revisit in the future</sup></sub>
+
 <sub><sup>\+ I did not do day15. Its convoluted just for the sake of being convoluted. Not in the mood to be burned out</sup></sub>
+
 <sub><sup>\I will revisit these days later, when I'm more open to them</sup></sub>
 
 # Notable Challenges
