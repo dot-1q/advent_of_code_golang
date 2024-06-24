@@ -10,9 +10,11 @@ This was done as a way to learn and get experienced with Go, so the first implem
 | 2015 | Yes         |
 | 2016 | Yes*        |
 | 2017 | Yes         |
-| 2018 | In Progress |
+| 2018 | In Progress+|
 
 <sub><sup>\* I did not do day11. Might revisit in the future</sup></sub>
+<sub><sup>\+ I did not do day15. Its convoluted just for the sake of being convoluted. Not in the mood to be burned out</sup></sub>
+<sub><sup>\I will revisit these days later, when I'm more open to them</sup></sub>
 
 # Notable Challenges
 [Day 22 of 2015](2015/day22/twenty-two.go) Implemented Dijkstra's algorithm with a Priority Queue with respect to each game state and its mana spent.
@@ -24,3 +26,5 @@ This was done as a way to learn and get experienced with Go, so the first implem
 [Day 21 of 2017](2017/day21/twenty-one.go) Performed various matrix transformations (rotate and flip). ChatGPT helped me write the Merging algorithm for the matrices.
 
 [Day 24 of 2017](2017/day24/twenty-four.go) Depth First Search to create all the possible paths from one node to the next valid ones. Very concise solution.
+
+[Day 16 of 2018](2018/day16/sixteen.go) First time creating an array of functions to callback later in the runtime of the program. Also fmt.Sscanf usage to revisit later.
